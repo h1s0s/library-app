@@ -22,7 +22,7 @@ public class Book {
   }
 
   public Book(String name) {
-    if (name.isBlank()) {
+    if (name.isEmpty()) {
       throw new IllegalArgumentException("이름은 비어 있을 수 없습니다");
     }
     this.name = name;

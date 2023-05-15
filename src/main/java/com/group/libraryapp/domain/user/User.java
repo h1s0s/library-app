@@ -31,7 +31,7 @@ public class User {
   }
 
   public User(String name, Integer age) {
-    if (name.isBlank()) {
+    if ("".equals(name)) {
       throw new IllegalArgumentException("이름은 비어 있을 수 없습니다");
     }
     this.name = name;
@@ -49,8 +49,7 @@ public class User {
   public void returnBook(String bookName) {
     UserLoanHistory targetHistory = this.userLoanHistories.stream()
         .filter(history -> history.getBookName().equals(bookName))
-        .findFirst()
-        .orElseThrow();
+        .findFirst().orElseThrow(IllegalArgumentException::new);
     targetHistory.doReturn();
   }
 
