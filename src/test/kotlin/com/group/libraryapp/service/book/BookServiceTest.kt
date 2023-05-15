@@ -2,13 +2,14 @@ package com.group.libraryapp.service.book
 
 import com.group.libraryapp.domain.book.Book
 import com.group.libraryapp.domain.book.BookRepository
-import com.group.libraryapp.domain.user.JavaUser
+import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.domain.user.loanhistory.JavaUserLoanHistory
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
+import com.group.libraryapp.service.user.loanhistory.UserLoanHistory
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
@@ -51,7 +52,7 @@ class BookServiceTest @Autowired constructor(
     fun loanBookTest(){
         //given
         bookRepository.save(Book("이상한 나라의 앨리스"))
-        val savedUser = userRepository.save(JavaUser("최태현", null))
+        val savedUser = userRepository.save(User("최태현", null))
         val request = BookLoanRequest("최태현", "이상한 나라의 앨리스")
 
         //when
@@ -70,8 +71,8 @@ class BookServiceTest @Autowired constructor(
     fun loanBookFailTest(){
         //given
         bookRepository.save(Book("이상한 나라의 앨리스"))
-        val savedUser = userRepository.save(JavaUser("최태현", null))
-        userLoanHistoryRepository.save(JavaUserLoanHistory(savedUser, "이상한 나라의 앨리스", false))
+        val savedUser = userRepository.save(User("최태현", null))
+        userLoanHistoryRepository.save(UserLoanHistory(savedUser, "이상한 나라의 앨리스", false))
         val request = BookLoanRequest("최태현", "이상한 나라의 앨리스")
 
         //when&then
@@ -86,8 +87,8 @@ class BookServiceTest @Autowired constructor(
     fun returnBookTest() {
         //given
         bookRepository.save(Book("이상한 나라의 앨리스"))
-        val savedUser = userRepository.save(JavaUser("최태현", null))
-        userLoanHistoryRepository.save(JavaUserLoanHistory(savedUser, "이상한 나라의 앨리스", false))
+        val savedUser = userRepository.save(User("최태현", null))
+        userLoanHistoryRepository.save(UserLoanHistory(savedUser, "이상한 나라의 앨리스", false))
         val request = BookReturnRequest("최태현", "이상한 나라의 앨리스")
 
         //when

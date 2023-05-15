@@ -1,9 +1,10 @@
 package com.group.libraryapp.domain.user.loanhistory;
 
+import com.group.libraryapp.service.user.loanhistory.UserLoanHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserLoanHistoryRepository extends JpaRepository<JavaUserLoanHistory, Long> {
+public interface UserLoanHistoryRepository extends JpaRepository<UserLoanHistory, Long> {
 
-  JavaUserLoanHistory findByBookNameAndIsReturn(String bookName, boolean isReturn);
+  UserLoanHistory findByBookNameAndIsReturn(String bookName, boolean isReturn);
 
 }
