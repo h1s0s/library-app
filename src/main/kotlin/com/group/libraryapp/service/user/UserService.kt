@@ -25,13 +25,13 @@ class UserService(
     @Transactional(readOnly = true)
     fun getUsers(): List<UserResponse>{
         return userRepository.findAll()
-        .map { user -> UserResponse(user) }
+        .map { user -> UserResponse.of(user) }
     }
 
     @Transactional
     fun updateUserName(request: UserUpdateRequest){
         val user = userRepository.findByIdOrThrow(request.id)//확장함수로 리팩토링
-        user.updateName(request.name)
+        user.updateName(request.name!!)
     }
 
     @Transactional

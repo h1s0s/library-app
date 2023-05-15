@@ -1,16 +1,6 @@
-package com.group.libraryapp.dto.user.request;
+package com.group.libraryapp.dto.user.request
 
-public class UserUpdateRequest {
-
-  private long id;
-  private String name;
-
-  public long getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-}
+data class UserUpdateRequest(
+    val id: Long = 0,
+    val name: String? = null,
+)
