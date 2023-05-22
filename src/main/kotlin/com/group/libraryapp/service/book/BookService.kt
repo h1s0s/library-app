@@ -45,13 +45,11 @@ class BookService(
 
     @Transactional(readOnly = true)//조회하는 기능은 readOnly를 사용해 읽기전용으로 셋팅, 예상치 못한 엔티티의 등록,변경,삭제를 예방할 수 있고, 성능 최적화.
     fun countLoanedBook(): Int {
-        return userLoanHistoryRepository.findAllByStatus(UserLoanStatus.LOANED).size
+        return userLoanHistoryRepository.countByStatus(UserLoanStatus.LOANED).toInt()
     }
 
     @Transactional(readOnly = true)
     fun getBookStatistics(): List<BookStatResponse> {
-        return bookRepository.findAll() //List<Book>
-                .groupBy{ book -> book.type } //Map<BookType, List<Book>>
-                .map { (type, books) -> BookStatResponse(type, books.size)}
+        return bookRepository.getStats()
     }
 }
