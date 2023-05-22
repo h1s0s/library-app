@@ -8,6 +8,7 @@ import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
+import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.util.fail
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -40,5 +41,17 @@ class BookService(
     fun returnBook(request: BookReturnRequest){
         val user = userRepository.findByName(request.userName) ?: fail()
         user.returnBook(request.bookName)
+    }
+
+    @Transactional(readOnly = true)//조회하는 기능은 readOnly를 사용해 읽기전용으로 셋팅, 예상치 못한 엔티티의 등록,변경,삭제를 예방할 수 있고, 성능 최적화.
+    fun countLoanedBook(): Int {
+        return userLoanHistoryRepository.findAllByStatus(UserLoanStatus.LOANED).size
+    }
+
+    @Transactional(readOnly = true)
+    fun getBookStatistics(): List<BookStatResponse> {
+        return bookRepository.findAll() //List<Book>
+                .groupBy{ book -> book.type } //Map<BookType, List<Book>>
+                .map { (type, books) -> BookStatResponse(type, books.size)}
     }
 }
