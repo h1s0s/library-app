@@ -23,7 +23,7 @@ class UserLoanHistory(
     companion object{
         fun fixture(
             user: User,
-            bookName: String = "이상한 나라의 앨리스",
+            bookName: String = "이상한 나라의 엘리스",
             status: UserLoanStatus = UserLoanStatus.LOANED,
             id: Long? = null,
         ): UserLoanHistory {

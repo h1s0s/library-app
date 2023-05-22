@@ -9,10 +9,10 @@ class User (
         var name: String,
         val age: Int?,
 
-        @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val userLoanHistories : MutableList<UserLoanHistory> = mutableListOf(),//가변리스트
 
-        @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 ){

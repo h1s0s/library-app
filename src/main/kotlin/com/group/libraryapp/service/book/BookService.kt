@@ -29,7 +29,7 @@ class BookService(
     fun loanBook(request: BookLoanRequest){
         val book = bookRepository.findByName(request.bookName) ?: fail()
         if (userLoanHistoryRepository.findByBookNameAndStatus(request.bookName, UserLoanStatus.LOANED) != null){
-            throw IllegalArgumentException("진작 대출되어 있는 책입니다");
+            throw IllegalArgumentException("진작 대출되어 있는 책입니다")
         }
 
         val user = userRepository.findByName(request.userName) ?: fail()
