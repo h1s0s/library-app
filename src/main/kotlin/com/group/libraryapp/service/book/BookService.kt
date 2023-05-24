@@ -9,15 +9,19 @@ import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.dto.book.response.BookStatResponse
+import com.group.libraryapp.repository.book.BookQuerydslRepository
+import com.group.libraryapp.repository.user.loanhistory.UserLoanHistoryQueryRepository
 import com.group.libraryapp.util.fail
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BookService(
-        private val bookRepository: BookRepository,
-        private val userRepository: UserRepository,
-        private val userLoanHistoryRepository: UserLoanHistoryRepository,
+    private val bookRepository: BookRepository,
+    private val bookQuerydslRepository: BookQuerydslRepository,
+    private val userRepository: UserRepository,
+    private val userLoanHistoryRepository: UserLoanHistoryRepository,
+    private val userLoanHistoryQueryRepository: UserLoanHistoryQueryRepository,
 ) {
 
     @Transactional
@@ -29,7 +33,7 @@ class BookService(
     @Transactional
     fun loanBook(request: BookLoanRequest){
         val book = bookRepository.findByName(request.bookName) ?: fail()
-        if (userLoanHistoryRepository.findByBookNameAndStatus(request.bookName, UserLoanStatus.LOANED) != null){
+        if (userLoanHistoryQueryRepository.find(request.bookName, UserLoanStatus.LOANED) != null){
             throw IllegalArgumentException("진작 대출되어 있는 책입니다")
         }
 
@@ -45,11 +49,11 @@ class BookService(
 
     @Transactional(readOnly = true)//조회하는 기능은 readOnly를 사용해 읽기전용으로 셋팅, 예상치 못한 엔티티의 등록,변경,삭제를 예방할 수 있고, 성능 최적화.
     fun countLoanedBook(): Int {
-        return userLoanHistoryRepository.countByStatus(UserLoanStatus.LOANED).toInt()
+        return userLoanHistoryQueryRepository.count(UserLoanStatus.LOANED).toInt()
     }
 
     @Transactional(readOnly = true)
     fun getBookStatistics(): List<BookStatResponse> {
-        return bookRepository.getStats()
+        return bookQuerydslRepository.getStats()
     }
 }
